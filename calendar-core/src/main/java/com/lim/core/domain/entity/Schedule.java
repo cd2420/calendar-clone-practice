@@ -16,11 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "schedules")
-public class Schedule {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Schedule extends BaseEntity {
 
     private LocalDateTime startAt;
     private LocalDateTime endAt;
@@ -30,10 +26,6 @@ public class Schedule {
     @JoinColumn(name = "writer_id")
     @ManyToOne
     private User writer;
-
-    @Builder.Default
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
     private ScheduleType scheduleType;
