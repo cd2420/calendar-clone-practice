@@ -31,8 +31,16 @@ public class UserService {
         ));
     }
 
+    @Transactional
     public Optional<User> findPwMatchUser(String email, String password) {
         return userRepository.findByEmail(email)
                 .map(user ->user.isMatch(encryptor, password) ? user : null);
+    }
+
+    @Transactional
+    public User getByUserIdOrThrow(Long id) {
+        return userRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("no user.")
+        );
     }
 }
