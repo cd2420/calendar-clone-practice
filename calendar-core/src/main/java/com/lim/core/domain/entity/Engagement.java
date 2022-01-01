@@ -4,6 +4,7 @@ import com.lim.core.domain.Event;
 import com.lim.core.domain.RequestStatus;
 import com.lim.core.domain.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
+@Builder
 @Table(name = "engagements")
 public class Engagement extends BaseEntity {
 
@@ -26,6 +28,11 @@ public class Engagement extends BaseEntity {
     @ManyToOne
     private User attendee;
 
+    @Enumerated(value = EnumType.STRING)
     private RequestStatus requestStatus;
+
+    public Event getEvent() {
+        return schedule.toEvent();
+    }
 
 }
