@@ -1,5 +1,6 @@
 package com.lim.core.domain.entity;
 
+import com.lim.core.util.Encryptor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,4 +32,7 @@ public class User extends BaseEntity {
     }
 
 
+    public boolean isMatch(Encryptor encryptor, String password) {
+        return encryptor.isMatch(password, this.password);
+    }
 }

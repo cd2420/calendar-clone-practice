@@ -3,6 +3,7 @@ package com.lim.core.service;
 import com.lim.core.domain.entity.User;
 import com.lim.core.domain.entity.repository.UserRepository;
 import com.lim.core.dto.UserCreateReq;
+import com.lim.core.util.Encryptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    private final Encryptor encryptor;
     private final UserRepository userRepository;
 
     @Transactional
@@ -24,13 +26,13 @@ public class UserService {
         return userRepository.save(new User(
                 userCreateReq.getName(),
                 userCreateReq.getEmail(),
-                userCreateReq.getPassword(),
+                encryptor.encrypt(userCreateReq.getPassword()),
                 userCreateReq.getBirthday()
         ));
     }
 
     public Optional<User> findPwMatchUser(String email, String password) {
         return userRepository.findByEmail(email)
-                .map(user -> user.getPassword().equals(password) ? user : null);
+                .map(user ->user.isMatch(encryptor, password) ? user : null);
     }
 }
