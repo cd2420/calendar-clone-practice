@@ -2,8 +2,10 @@ package com.lim.api.controller;
 
 import com.lim.api.dto.AuthUser;
 import com.lim.api.dto.EventCreateReq;
+import com.lim.api.dto.NotificationCreateReq;
 import com.lim.api.dto.TaskCreateReq;
 import com.lim.api.service.EventService;
+import com.lim.api.service.NotificationService;
 import com.lim.api.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ public class ScheduleController {
 
     private final TaskService taskService;
     private final EventService eventService;
+    private final NotificationService notificationService;
 
     @PostMapping("/tasks")
     public ResponseEntity<Void> createTask(
@@ -37,6 +40,16 @@ public class ScheduleController {
     ) {
 
         eventService.create(eventCreateReq, authUser);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/notifications")
+    public ResponseEntity<Void> createNotification(
+            @RequestBody NotificationCreateReq notificationCreateReq
+            , AuthUser authUser
+    ) {
+
+        notificationService.create(notificationCreateReq, authUser);
         return ResponseEntity.ok().build();
     }
 
