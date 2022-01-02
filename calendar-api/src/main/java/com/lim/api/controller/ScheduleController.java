@@ -1,10 +1,8 @@
 package com.lim.api.controller;
 
 import com.lim.api.dto.*;
-import com.lim.api.service.EventService;
-import com.lim.api.service.NotificationService;
-import com.lim.api.service.ScheduleQueryService;
-import com.lim.api.service.TaskService;
+import com.lim.api.service.*;
+import com.lim.core.domain.RequestStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +22,7 @@ public class ScheduleController {
     private final ScheduleQueryService scheduleQueryService;
     private final TaskService taskService;
     private final EventService eventService;
+    private final EngagementService engagementService;
     private final NotificationService notificationService;
 
     @PostMapping("/tasks")
@@ -86,6 +85,16 @@ public class ScheduleController {
     ) {
 
         return scheduleQueryService.getScheduleByMonth(authUser, yearMonth == null ? YearMonth.now() : YearMonth.parse(yearMonth));
+
+    }
+
+    @PutMapping("/events/engagement/{engagementId}")
+    public RequestStatus updateEngagement(
+            @Valid @RequestBody ReplyEngagementReq replyEngagementReq,
+            @PathVariable Long engagementId,
+            AuthUser authUser
+    ) {
+        return engagementService.update(authUser, engagementId, replyEngagementReq.getType());
 
     }
 

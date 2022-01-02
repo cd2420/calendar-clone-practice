@@ -1,6 +1,7 @@
 package com.lim.api.service;
 
 import com.lim.api.dto.AuthUser;
+import com.lim.api.dto.EngagementEmailStuff;
 import com.lim.api.dto.EventCreateReq;
 import com.lim.core.domain.RequestStatus;
 import com.lim.core.domain.entity.Engagement;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,16 +57,29 @@ public class EventService {
         );
 
         scheduleRepository.save(eventSchedule);
-        eventCreateReq.getAttendeeIds()
-                .forEach(atId -> {
-                    final User attendee = userService.getByUserIdOrThrow(atId);
+        final List<User> attendees =
+            eventCreateReq.getAttendeeIds().stream()
+                    .map(aId -> userService.getByUserIdOrThrow(aId))
+                    .collect(Collectors.toList());
+
+        attendees.forEach(attendee -> {
                     final Engagement engagement = Engagement.builder()
                                                             .schedule(eventSchedule)
                                                             .requestStatus(RequestStatus.REQUESTED)
                                                             .attendee(attendee)
                                                             .build();
                     engagementRepository.save(engagement);
-                    emailService.sendEngagement(engagement);
+                    emailService.sendEngagement(
+                            EngagementEmailStuff.builder()
+                                    .title(engagement.getEvent().getTitle())
+                                    .toEmail(engagement.getAttendee().getEmail())
+                                    .attendeeEmails(
+                                            attendees.stream()
+                                                    .map(a -> a.getEmail())
+                                                    .collect(Collectors.toList())
+                                    )
+                                    .period(engagement.getEvent().getPeriod())
+                                    .build());
                 });
 
 
