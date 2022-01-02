@@ -4,7 +4,10 @@ import com.lim.core.domain.RequestReplyType;
 
 public class ReplyEngagementReq {
 
-    private final RequestReplyType type;
+    private RequestReplyType type;
+
+    public ReplyEngagementReq() {}
+
 
     public ReplyEngagementReq(RequestReplyType type) {
         this.type = type;

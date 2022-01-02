@@ -88,7 +88,7 @@ public class ScheduleController {
 
     }
 
-    @PutMapping("/events/engagement/{engagementId}")
+    @PutMapping("/events/engagements/{engagementId}")
     public RequestStatus updateEngagement(
             @Valid @RequestBody ReplyEngagementReq replyEngagementReq,
             @PathVariable Long engagementId,
