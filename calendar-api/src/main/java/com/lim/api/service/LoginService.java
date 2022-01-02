@@ -4,6 +4,8 @@ import com.lim.api.dto.LoginReq;
 import com.lim.api.dto.SignUpReq;
 import com.lim.core.domain.entity.User;
 import com.lim.core.dto.UserCreateReq;
+import com.lim.core.exception.CalendarException;
+import com.lim.core.exception.ErrorCode;
 import com.lim.core.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,7 @@ public class LoginService {
         if (user.isPresent()) {
             httpSession.setAttribute(LOGIN_SESSION_KEY, user.get().getId());
         } else {
-            throw new RuntimeException("password or email not match");
+            throw new CalendarException(ErrorCode.PASSWORD_NOT_MATCH);
         }
 
     }

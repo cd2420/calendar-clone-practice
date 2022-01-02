@@ -8,6 +8,8 @@ import com.lim.core.domain.entity.Schedule;
 import com.lim.core.domain.entity.User;
 import com.lim.core.domain.entity.repository.EngagementRepository;
 import com.lim.core.domain.entity.repository.ScheduleRepository;
+import com.lim.core.exception.CalendarException;
+import com.lim.core.exception.ErrorCode;
 import com.lim.core.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,7 @@ public class EventService {
                             )
                 )
         ) {
-            throw new RuntimeException("cannot make engagement. period overlapped! ");
+            throw new CalendarException(ErrorCode.EVENT_CREATE_OVERLAPPED_PERIOD);
         }
 
         final Schedule eventSchedule = Schedule.event(
