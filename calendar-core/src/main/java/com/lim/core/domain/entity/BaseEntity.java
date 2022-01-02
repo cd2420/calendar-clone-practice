@@ -28,4 +28,5 @@ public abstract class BaseEntity {
     public BaseEntity(Long id) {
         this.id = id;
     }
+
 }

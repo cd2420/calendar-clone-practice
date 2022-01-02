@@ -4,11 +4,15 @@ import com.lim.core.domain.Event;
 import com.lim.core.domain.Notification;
 import com.lim.core.domain.ScheduleType;
 import com.lim.core.domain.Task;
-import lombok.*;
+import com.lim.core.util.Period;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder
 @Getter
@@ -79,6 +83,10 @@ public class Schedule extends BaseEntity {
 
     public Notification toNotification() {
         return new Notification(this);
+    }
+
+    public boolean isOverlapped(LocalDate date) {
+        return Period.of(getStartAt(), getEndAt()).isOverlapped(date);
     }
 
 }

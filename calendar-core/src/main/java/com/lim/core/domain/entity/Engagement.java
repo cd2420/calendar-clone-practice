@@ -3,12 +3,14 @@ package com.lim.core.domain.entity;
 import com.lim.core.domain.Event;
 import com.lim.core.domain.RequestStatus;
 import com.lim.core.domain.entity.User;
+import com.lim.core.util.Period;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -35,4 +37,7 @@ public class Engagement extends BaseEntity {
         return schedule.toEvent();
     }
 
+    public boolean isOverlapped(LocalDate date) {
+        return this.schedule.isOverlapped(date);
+    }
 }
